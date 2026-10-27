@@ -4,6 +4,9 @@
 
 **TierMC and SubTiers ranks, right next to a player's name.**
 
+> **A fork of [QTiers](https://github.com/Adrian1337afk/qtiers), made for the [TierMC](https://tiermc.com) tier list.**
+> The TierMC team is welcome to use it, change it and publish it as their own tier list mod, under the GPL-3.0 license.
+
 TiersMC Tagger is a Fabric client mod for **Minecraft 1.21.11**. It shows players' [TierMC](https://tiermc.com) and [SubTiers](https://subtiers.net) ranks in nametags and in the tab list, each with that site's own gamemode icons. It runs only on your client, so it works on any server.
 
 ## Features
@@ -39,7 +42,7 @@ The jar ends up in `build/libs/`.
 - **Tier data:** the [TierMC](https://tiermc.com/api.html) and [SubTiers](https://subtiers.net) APIs.
 - **Gamemode icons:** each site's own website. They belong to those sites.
 - **Skin renders:** [Visage](https://visage.surgeplay.com), with [mc-heads](https://mc-heads.net) as the fallback.
-- Based on [QTiers](https://github.com/Adrian1337afk/qtiers).
+- Forked from [QTiers](https://github.com/Adrian1337afk/qtiers) by qdran.
 
 ## License
 GNU GPL v3.0 (see [LICENSE](LICENSE)). The gamemode icons belong to their tier-list websites and are not covered by this license.
