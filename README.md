@@ -7,7 +7,7 @@
 > **A fork of [QTiers](https://github.com/Adrian1337afk/qtiers), made for the [TierMC](https://tiermc.com) tier list.**
 > The TierMC team is welcome to use it, change it and publish it as their own tier list mod, under the GPL-3.0 license.
 
-TiersMC Tagger is a Fabric client mod for **Minecraft 1.21.11**. It shows players' [TierMC](https://tiermc.com) and [SubTiers](https://subtiers.net) ranks in nametags and in the tab list, each with that site's own gamemode icons. It runs only on your client, so it works on any server.
+TiersMC Tagger is a Fabric client mod for **Minecraft 1.21.4, 1.21.8, 1.21.11, 26.1.x, 26.2 and 26.3**. It shows players' [TierMC](https://tiermc.com) and [SubTiers](https://subtiers.net) ranks in nametags and in the tab list, each with that site's own gamemode icons. It runs only on your client.
 
 ## Features
 - **Tiers next to names**: put TierMC and SubTiers on the left or right of the name, or turn either off. Pick a gamemode per site, or show the player's highest tier.
@@ -44,13 +44,24 @@ TierMC runs one Discord server per gamemode. Join one to get tested:
 | `/tiersmc reload` | Reloads the config and fetches tiers again |
 
 ## Install
-Put `tiersmc-tagger-<version>+1.21.11.jar` and [Fabric API](https://modrinth.com/mod/fabric-api) in `.minecraft/mods`. [Mod Menu](https://modrinth.com/mod/modmenu) is optional.
+Choose the jar matching your Minecraft version and put it and the matching [Fabric API](https://modrinth.com/mod/fabric-api) in `.minecraft/mods`. [Mod Menu](https://modrinth.com/mod/modmenu) is optional. Install only one TiersMC Tagger jar.
+
+| Minecraft | Jar suffix | Java |
+|---|---|---|
+| 1.21.4 | `+1.21.4.jar` | 21+ |
+| 1.21.8 | `+1.21.8.jar` | 21+ |
+| 1.21.11 | `+1.21.11.jar` | 21+ |
+| 26.1.x | `+26.1.jar` | 25+ |
+| 26.2 | `+26.2.jar` | 25+ |
+| 26.3 | `+26.3.jar` | 25+ |
+
+The 26.1 build targets 26.1.2 and declares compatibility with 26.1.x. Each version has separate Minecraft rendering code; all share the same two tier lists, settings and cache format. Compilation does not replace in-game testing on each patch version.
 
 ## Build
 ```
 gradlew collectJars
 ```
-The jar ends up in `build/libs/`.
+All six jars end up in `build/libs/`. Building requires JDK 25 or newer.
 
 ## Credits
 - **Tier data:** the [TierMC](https://tiermc.com/api.html) and [SubTiers](https://subtiers.net) APIs.
