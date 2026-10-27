@@ -19,6 +19,20 @@ TiersMC Tagger is a Fabric client mod for **Minecraft 1.21.11**. It shows player
 - **Clickable chat names** and a **player search** box.
 - Works on servers with custom nametags and tab lists, like mcpvp.club.
 
+## TierMC Discord servers
+TierMC runs one Discord server per gamemode. Join one to get tested:
+
+| Gamemode | Discord |
+|---|---|
+| Vanilla | https://discord.gg/VswgH4CT5c |
+| Sword | https://discord.gg/6h77S8JmCV |
+| Mace | https://discord.gg/XWD5VPwmPe |
+| UHC | https://discord.gg/vD9DmsnrM8 |
+| Potion | https://discord.gg/87VuPEDxu7 |
+| Nethpot | https://discord.gg/kpBB29ZAnG |
+| Axe | https://discord.gg/VhsdMPTT5y |
+| SMP | https://discord.gg/rYvJZUbX5R |
+
 ## Commands
 | Command | What it does |
 |---|---|
