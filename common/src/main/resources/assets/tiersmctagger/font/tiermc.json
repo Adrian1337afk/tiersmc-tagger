@@ -1,0 +1,10 @@
+{"providers": [
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/vanilla.png", "ascent": 7, "height": 8, "chars": ["\uE900"]},
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/sword.png", "ascent": 7, "height": 8, "chars": ["\uE901"]},
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/mace.png", "ascent": 7, "height": 8, "chars": ["\uE902"]},
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/uhc.png", "ascent": 7, "height": 8, "chars": ["\uE903"]},
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/potion.png", "ascent": 7, "height": 8, "chars": ["\uE904"]},
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/nethpot.png", "ascent": 7, "height": 8, "chars": ["\uE905"]},
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/axe.png", "ascent": 7, "height": 8, "chars": ["\uE906"]},
+  {"type": "bitmap", "file": "tiersmctagger:icons/tiermc/smp.png", "ascent": 7, "height": 8, "chars": ["\uE907"]}
+]}

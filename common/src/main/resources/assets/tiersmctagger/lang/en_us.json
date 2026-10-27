@@ -1,0 +1,10 @@
+{
+  "key.category.tiersmctagger.main": "TiersMC Tagger",
+  "key.tiersmctagger.cycle_tiermc": "Cycle TierMC gamemode",
+  "key.tiersmctagger.cycle_subtiers": "Cycle SubTiers gamemode",
+  "key.tiersmctagger.toggle": "Toggle TiersMC Tagger",
+  "key.tiersmctagger.nearest": "Open nearest player's tiers",
+  "key.tiersmctagger.config": "Open TiersMC Tagger settings",
+  "key.tiersmctagger.lobby": "Open online players",
+  "key.tiersmctagger.leaderboards": "Open leaderboards"
+}

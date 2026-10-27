@@ -1,0 +1,183 @@
+package dev.tiersmctagger;
+
+import com.mojang.brigadier.arguments.StringArgumentType;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.command.CommandSource;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
+
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
+
+public class TiersMCTagger implements ClientModInitializer {
+    public static final String MOD_ID = "tiersmctagger";
+    public static final Logger LOGGER = TaggerLog.LOGGER;
+
+    private static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of(MOD_ID, "main"));
+    private static final Map<TierSource, KeyBinding> CYCLE_KEYS = new EnumMap<>(TierSource.class);
+    private static KeyBinding toggleKey;
+    private static KeyBinding nearestKey;
+    private static KeyBinding configKey;
+    private static KeyBinding lobbyKey;
+    private static KeyBinding leaderboardKey;
+
+    /** Screens opened from chat commands must wait a tick, or closing chat replaces them. */
+    private static Supplier<Screen> pendingScreen;
+
+    @Override
+    public void onInitializeClient() {
+        TaggerConfig.load();
+        TierApi.startDiskCache();
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> TierApi.flushDiskCache());
+
+        CYCLE_KEYS.put(TierSource.TIERMC, key("cycle_tiermc", GLFW.GLFW_KEY_UNKNOWN));
+        CYCLE_KEYS.put(TierSource.SUBTIERS, key("cycle_subtiers", GLFW.GLFW_KEY_UNKNOWN));
+        toggleKey = key("toggle", GLFW.GLFW_KEY_UNKNOWN);
+        nearestKey = key("nearest", GLFW.GLFW_KEY_H);
+        configKey = key("config", GLFW.GLFW_KEY_UNKNOWN);
+        lobbyKey = key("lobby", GLFW.GLFW_KEY_UNKNOWN);
+        leaderboardKey = key("leaderboards", GLFW.GLFW_KEY_UNKNOWN);
+
+        HudElementRegistry.addLast(Identifier.of(MOD_ID, "opponent"), OpponentHud::render);
+        AttackEntityCallback.EVENT.register((player, world, hand, entity, hit) -> {
+            if (world.isClient() && entity instanceof PlayerEntity target) OpponentHud.onAttack(target);
+            return ActionResult.PASS;
+        });
+
+        ClientTickEvents.END_CLIENT_TICK.register(TiersMCTagger::onTick);
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
+                dispatcher.register(literal("tiersmc")
+                        .executes(ctx -> {
+                            pendingScreen = () -> new TaggerConfigScreen(null);
+                            return 1;
+                        })
+                        .then(literal("settings").executes(ctx -> {
+                            pendingScreen = () -> new TaggerConfigScreen(null);
+                            return 1;
+                        }))
+                        .then(literal("debug").executes(ctx -> {
+                            DebugReport.run(MinecraftClient.getInstance());
+                            return 1;
+                        }))
+                        .then(literal("list").executes(ctx -> {
+                            pendingScreen = () -> new TaggerLobbyScreen(null);
+                            return 1;
+                        }))
+                        .then(literal("top").executes(ctx -> {
+                            pendingScreen = () -> new TaggerLeaderboardScreen(null);
+                            return 1;
+                        }))
+                        .then(literal("compare")
+                                .then(argument("first", StringArgumentType.word())
+                                        .suggests((ctx, builder) -> CommandSource.suggestMatching(onlinePlayerNames(), builder))
+                                        .then(argument("second", StringArgumentType.word())
+                                                .suggests((ctx, builder) -> CommandSource.suggestMatching(onlinePlayerNames(), builder))
+                                                .executes(ctx -> {
+                                                    String a = StringArgumentType.getString(ctx, "first");
+                                                    String b = StringArgumentType.getString(ctx, "second");
+                                                    pendingScreen = () -> new TaggerCompareScreen(a, b, null);
+                                                    return 1;
+                                                }))))
+                        .then(literal("reload").executes(ctx -> {
+                            TaggerConfig.load();
+                            TierApi.clearCache();
+                            ctx.getSource().sendFeedback(prefix().append(Text.literal("Config reloaded and cache cleared.")));
+                            return 1;
+                        }))
+                        .then(argument("player", StringArgumentType.word())
+                                .suggests((ctx, builder) -> CommandSource.suggestMatching(onlinePlayerNames(), builder))
+                                .executes(ctx -> {
+                                    String name = StringArgumentType.getString(ctx, "player");
+                                    pendingScreen = () -> new TaggerProfileScreen(name);
+                                    return 1;
+                                }))));
+    }
+
+    private static KeyBinding key(String name, int defaultKey) {
+        return KeyBindingHelper.registerKeyBinding(
+                new KeyBinding("key.tiersmctagger." + name, InputUtil.Type.KEYSYM, defaultKey, CATEGORY));
+    }
+
+    private static void onTick(MinecraftClient client) {
+        if (pendingScreen != null) {
+            Supplier<Screen> screen = pendingScreen;
+            pendingScreen = null;
+            client.setScreen(screen.get());
+        }
+        if (client.player == null) return;
+
+        TaggerConfig config = TaggerConfig.get();
+        for (Map.Entry<TierSource, KeyBinding> e : CYCLE_KEYS.entrySet()) {
+            while (e.getValue().wasPressed()) {
+                TaggerConfig.SiteSettings site = config.site(e.getKey());
+                site.gamemode = GameModes.next(e.getKey(), site.gamemode);
+                TaggerConfig.save();
+                client.player.sendMessage(Text.literal(e.getKey().displayName + ": ")
+                        .styled(s -> s.withColor(e.getKey().color))
+                        .append(ModeTexts.styledName(e.getKey(), site.gamemode)), true);
+            }
+        }
+        while (toggleKey.wasPressed()) {
+            config.enabled = !config.enabled;
+            TaggerConfig.save();
+            client.player.sendMessage(Text.literal("TiersMC Tagger ")
+                    .append(config.enabled ? Text.literal("enabled").formatted(Formatting.GREEN)
+                            : Text.literal("disabled").formatted(Formatting.RED)), true);
+        }
+        while (configKey.wasPressed()) {
+            client.setScreen(new TaggerConfigScreen(null));
+        }
+        while (lobbyKey.wasPressed()) {
+            client.setScreen(new TaggerLobbyScreen(null));
+        }
+        while (leaderboardKey.wasPressed()) {
+            client.setScreen(new TaggerLeaderboardScreen(null));
+        }
+        while (nearestKey.wasPressed()) {
+            AbstractClientPlayerEntity nearest = client.world.getPlayers().stream()
+                    .filter(p -> p != client.player)
+                    .min(Comparator.comparingDouble(p -> p.squaredDistanceTo(client.player)))
+                    .orElse(null);
+            if (nearest == null) {
+                client.player.sendMessage(Text.literal("No players nearby").formatted(Formatting.GRAY), true);
+            } else {
+                client.setScreen(new TaggerProfileScreen(nearest.getGameProfile().name()));
+            }
+        }
+    }
+
+    private static List<String> onlinePlayerNames() {
+        var handler = MinecraftClient.getInstance().getNetworkHandler();
+        if (handler == null) return List.of();
+        return handler.getPlayerList().stream().map(PlayerListEntry::getProfile).map(p -> p.name()).toList();
+    }
+
+    public static MutableText prefix() {
+        return Text.literal("[TiersMC Tagger] ").styled(s -> s.withColor(0xE8BA3A));
+    }
+}

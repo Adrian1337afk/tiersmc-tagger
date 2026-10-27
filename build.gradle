@@ -1,0 +1,15 @@
+plugins {
+    // 1.21.x is obfuscated and uses Yarn names (remap); 26.x ships unobfuscated with Mojang names
+    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}" apply false
+    id 'net.fabricmc.fabric-loom' version "${loom_version}" apply false
+}
+
+// Copies every version's jar to build/libs, e.g. tiersmc-tagger-1.0.0+1.21.11.jar
+tasks.register('collectJars', Copy) {
+    subprojects.each { p -> dependsOn(p.tasks.named('build')) }
+    from(subprojects.collect { p -> p.layout.buildDirectory.dir('libs') }) {
+        include '*.jar'
+        exclude '*-sources.jar'
+    }
+    into layout.buildDirectory.dir('libs')
+}
