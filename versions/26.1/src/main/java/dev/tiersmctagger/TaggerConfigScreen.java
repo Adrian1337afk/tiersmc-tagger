@@ -123,9 +123,6 @@ public class TaggerConfigScreen extends Screen {
         // qdran.de logo in the bottom-right corner; clicking it opens qdran.de
         int x = width - LOGO_SIZE - 4, y = height - LOGO_SIZE - 4;
         context.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, QDRAN_LOGO, x, y, 0, 0, LOGO_SIZE, LOGO_SIZE, LOGO_SIZE, LOGO_SIZE);
-        if (overLogo(mouseX, mouseY)) {
-            context.text(font, "qdran.de", x - font.width("qdran.de") - 4, y + 4, 0xFFAAAAAA, false);
-        }
     }
 
     @Override
