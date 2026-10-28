@@ -18,6 +18,9 @@ public class TaggerConfigScreen extends Screen {
     static final int BUTTON_H = 20;
     static final int GAP = 4;
 
+    private static final net.minecraft.resources.Identifier QDRAN_LOGO = net.minecraft.resources.Identifier.fromNamespaceAndPath(TiersMCTagger.MOD_ID, "textures/gui/qdran.png");
+    private static final int LOGO_SIZE = 16;
+
     private final @Nullable Screen parent;
     private EditBox search;
 
@@ -75,6 +78,24 @@ public class TaggerConfigScreen extends Screen {
     }
 
     @Override
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent click, boolean doubled) {
+        if (click.button() == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT && overLogo(click.x(), click.y())) {
+            openQdranDe();
+            return true;
+        }
+        return super.mouseClicked(click, doubled);
+    }
+
+    private boolean overLogo(double mouseX, double mouseY) {
+        int x = width - LOGO_SIZE - 4, y = height - LOGO_SIZE - 4;
+        return mouseX >= x && mouseX < x + LOGO_SIZE && mouseY >= y && mouseY < y + LOGO_SIZE;
+    }
+
+    private void openQdranDe() {
+        net.minecraft.client.gui.screens.ConfirmLinkScreen.confirmLinkNow(this, "https://qdran.de", true);
+    }
+
+    @Override
     public boolean keyPressed(KeyEvent input) {
         if (TaggerProfileScreen.searchEntered(search, input)) {
             TaggerConfig.save();
@@ -99,7 +120,12 @@ public class TaggerConfigScreen extends Screen {
         super.extractRenderState(context, mouseX, mouseY, deltaTicks);
         context.centeredText(font, title, width / 2, 15, 0xFFFFFFFF);
         // Small watermark in the bottom-right corner
-        context.text(font, "qdran.de", width - font.width("qdran.de") - 4, height - 12, 0x80AAAAAA, false);
+        // qdran.de logo in the bottom-right corner; clicking it opens qdran.de
+        int x = width - LOGO_SIZE - 4, y = height - LOGO_SIZE - 4;
+        context.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, QDRAN_LOGO, x, y, 0, 0, LOGO_SIZE, LOGO_SIZE, LOGO_SIZE, LOGO_SIZE);
+        if (overLogo(mouseX, mouseY)) {
+            context.text(font, "qdran.de", x - font.width("qdran.de") - 4, y + 4, 0xFFAAAAAA, false);
+        }
     }
 
     @Override
