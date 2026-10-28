@@ -2,7 +2,6 @@
 
 ## 1.0.1 — 2026-10-28
 
-- Added the qdran.de logo to the bottom-right of the settings screen. Click it to open qdran.de.
 - Minor bug fixes.
 
 ## 1.0.0 — 2026-10-28
