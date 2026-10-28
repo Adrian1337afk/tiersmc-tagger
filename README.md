@@ -8,7 +8,7 @@
 
 A Fabric client mod forked from [QTiers](https://github.com/Adrian1337afk/qtiers), made for the [TierMC tier list](https://tiermc.com). The TierMC team can use, modify and publish this fork under the project's GPL-3.0 license.
 
-[Download v1.0.0](https://github.com/Adrian1337afk/tiersmc-tagger/releases/tag/v1.0.0) · [Changelog](CHANGELOG.md) · [Report an issue](https://github.com/Adrian1337afk/tiersmc-tagger/issues)
+[Download v1.0.1](https://github.com/Adrian1337afk/tiersmc-tagger/releases/tag/v1.0.1) · [Changelog](CHANGELOG.md) · [Report an issue](https://github.com/Adrian1337afk/tiersmc-tagger/issues)
 
 ## What it does
 
@@ -33,16 +33,16 @@ Real development-client captures using a local dummy player and sample ranks, ra
 
 ## Downloads and requirements
 
-Choose **one** jar for your Minecraft version. All six files belong to release **1.0.0**.
+Choose **one** jar for your Minecraft version. All six files belong to release **1.0.1**.
 
 | Minecraft | Download | Required Java |
 |---|---|---|
-| 1.21.4 | [1.21.4 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.0/tiersmc-tagger-1.0.0%2B1.21.4.jar) | 21+ |
-| 1.21.8 | [1.21.8 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.0/tiersmc-tagger-1.0.0%2B1.21.8.jar) | 21+ |
-| 1.21.11 | [1.21.11 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.0/tiersmc-tagger-1.0.0%2B1.21.11.jar) | 21+ |
-| 26.1.x | [26.1 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.0/tiersmc-tagger-1.0.0%2B26.1.jar) | 25+ |
-| 26.2 | [26.2 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.0/tiersmc-tagger-1.0.0%2B26.2.jar) | 25+ |
-| 26.3 | [26.3 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.0/tiersmc-tagger-1.0.0%2B26.3.jar) | 25+ |
+| 1.21.4 | [1.21.4 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.1/tiersmc-tagger-1.0.1%2B1.21.4.jar) | 21+ |
+| 1.21.8 | [1.21.8 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.1/tiersmc-tagger-1.0.1%2B1.21.8.jar) | 21+ |
+| 1.21.11 | [1.21.11 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.1/tiersmc-tagger-1.0.1%2B1.21.11.jar) | 21+ |
+| 26.1.x | [26.1 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.1/tiersmc-tagger-1.0.1%2B26.1.jar) | 25+ |
+| 26.2 | [26.2 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.1/tiersmc-tagger-1.0.1%2B26.2.jar) | 25+ |
+| 26.3 | [26.3 jar](https://github.com/Adrian1337afk/tiersmc-tagger/releases/download/v1.0.1/tiersmc-tagger-1.0.1%2B26.3.jar) | 25+ |
 
 1. Install [Fabric Loader](https://fabricmc.net/use/installer/) for your Minecraft version. For 26.x, use Loader 0.20.1 or newer.
 2. Put the matching TiersMC Tagger jar and [Fabric API](https://modrinth.com/mod/fabric-api) in that instance's `mods` folder.

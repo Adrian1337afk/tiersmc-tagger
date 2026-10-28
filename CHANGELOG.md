@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 — 2026-10-28
+
+- Added the qdran.de logo to the bottom-right of the settings screen. Click it to open qdran.de.
+- Minor bug fixes.
+
 ## 1.0.0 — 2026-10-28
 
 - Expanded the original 1.21.11 release with separate Fabric jars for Minecraft 1.21.4, 1.21.8, 26.1.x, 26.2 and 26.3.
