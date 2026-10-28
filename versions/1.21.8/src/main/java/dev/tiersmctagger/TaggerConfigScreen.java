@@ -97,6 +97,8 @@ public class TaggerConfigScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
         super.render(context, mouseX, mouseY, deltaTicks);
         context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 15, 0xFFFFFFFF);
+        // Small watermark in the bottom-right corner
+        context.drawText(textRenderer, "qdran.de", width - textRenderer.getWidth("qdran.de") - 4, height - 12, 0x80AAAAAA, false);
     }
 
     @Override

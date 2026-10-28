@@ -98,6 +98,8 @@ public class TaggerConfigScreen extends Screen {
     public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
         super.extractRenderState(context, mouseX, mouseY, deltaTicks);
         context.centeredText(font, title, width / 2, 15, 0xFFFFFFFF);
+        // Small watermark in the bottom-right corner
+        context.text(font, "qdran.de", width - font.width("qdran.de") - 4, height - 12, 0x80AAAAAA, false);
     }
 
     @Override
